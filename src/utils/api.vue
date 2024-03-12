@@ -361,6 +361,52 @@ export default {
       }
       return message;
     },
+    async JoinQueue() {
+      let res;
+      let message;
+      try {
+        res = await this.axioCall.post(
+          `${process.env?.VUE_APP_G5V_API_URL || "/api"}/queue/join`,
+          {}
+        );
+        message = res.data.message;
+      } catch (err) {
+        message = err.data.message;
+      }
+      return message;
+    },
+    async LeaveQueue() {
+      let res;
+      let message;
+      try {
+        res = await this.axioCall.post(
+          `${process.env?.VUE_APP_G5V_API_URL || "/api"}/queue/leave`,
+          {}
+        );
+        message = res.data.message;
+      } catch (err) {
+        message = err.data.message;
+      }
+      return message;
+    },
+    async GetQueue() {
+      let retVal;
+      try {
+        retVal = this.$sse
+          .create({
+            url: `${process.env?.VUE_APP_G5V_API_URL || "/api"}/queue`,
+            format: "json",
+            withCredentials: true,
+            polyfill: true
+          })
+          .on("error", err =>
+            console.error("Failed to parse or lost connection:", err)
+          );
+      } catch (error) {
+        retVal = error.response.data.message;
+      }
+      return retVal;
+    },
     async GetEventMatchData(matchid) {
       let retVal;
       try {

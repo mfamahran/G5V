@@ -15,7 +15,8 @@
       "Logout": "Logout",
       "DarkMode": "Toggle Dark Mode",
       "PlayerLeader": "Player Leaderboard",
-      "Home": "Home"
+      "Home": "Home",
+      "Queue": "Queue"
     },
     "Login": {
       "title": "Login/Register",

@@ -54,6 +54,10 @@
             <v-list-item-title>{{ $t("Navbar.Home") }}</v-list-item-title>
           </v-list-item>
 
+          <v-list-item index="Queue" :to="'/queue'">
+            <v-list-item-title>{{ $t("Navbar.Queue") }}</v-list-item-title>
+          </v-list-item>
+
           <v-list-item index="Matches" :to="'/matches'">
             <v-list-item-title>{{ $t("Navbar.AllMatches") }}</v-list-item-title>
           </v-list-item>

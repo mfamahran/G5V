@@ -389,6 +389,20 @@ export default {
       }
       return message;
     },
+    async PickPlayer(queue) {
+      let res;
+      let message;
+      try {
+        res = await this.axioCall.post(
+          `${process.env?.VUE_APP_G5V_API_URL || "/api"}/queue/pick`,
+          queue
+        );
+        message = res.data.message;
+      } catch (err) {
+        message = err.data.message;
+      }
+      return message;
+    },
     async GetQueue() {
       let retVal;
       try {

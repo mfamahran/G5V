@@ -88,7 +88,7 @@
                   </v-list>
                 </v-col>
               </v-row>
-              <v-row justify="center">
+              <v-row justify="center" v-if="turn == 'team1' || turn == 'team2'">
                 <v-btn
                   small
                   color="info"
@@ -100,6 +100,21 @@
                   "
                 >
                   Pick {{ player.name }}
+                </v-btn>
+              </v-row>
+              <v-row
+                justify="center"
+                v-if="turn == 'map_pick_team1' || turn == 'map_pick_team2'"
+              >
+                <v-btn
+                  small
+                  color="info"
+                  @click="banMap(player)"
+                  v-for="map in maps"
+                  :key="map"
+                  :disabled="checkCaptain() || checkTurn()"
+                >
+                  Ban {{ map }}
                 </v-btn>
               </v-row>
             </v-card>
@@ -167,7 +182,8 @@ export default {
       queue: null,
       matchFound: false,
       turn: "team1",
-      playersMatch: []
+      playersMatch: [],
+      maps: []
     };
   },
   computed: {
@@ -211,6 +227,20 @@ export default {
         this.queue.team1 = this.team1;
         this.queue.team2 = this.team2;
         const message = await this.PickPlayer(this.queue);
+        console.log(message);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async banMap(map) {
+      try {
+        if (this.user.steam_id === this.team1.captain.steam_id) {
+          this.maps.splice(this.maps.indexOf(map), 1);
+        } else if (this.user.steam_id === this.team2.captain.steam_id) {
+          this.maps.splice(this.maps.indexOf(map), 1);
+        }
+        this.queue.maps = this.maps;
+        const message = await this.BanMap(this.queue);
         console.log(message);
       } catch (err) {
         console.log(err);
@@ -275,12 +305,12 @@ export default {
     },
     checkTurn() {
       if (this.user.steam_id === this.team1.captain.steam_id) {
-        if (this.turn === "team1") {
+        if (this.turn === "team1" || this.turn === "map_pick_team1") {
           console.log("checkTurn", false);
           return false;
         }
       } else if (this.user.steam_id === this.team2.captain.steam_id) {
-        if (this.turn === "team2") {
+        if (this.turn === "team2" || this.turn === "map_pick_team2") {
           console.log("checkTurn", false);
           return false;
         }
@@ -301,7 +331,11 @@ export default {
       } else {
         this.turn = message.turn;
       }
-      console.log(message.team1);
+      if (message.maps === undefined) {
+        this.maps = [];
+      } else {
+        this.maps = message.maps;
+      }
       if (message.team1 === undefined) {
         this.team1.players = [];
       } else {
@@ -311,6 +345,9 @@ export default {
         this.team2.players = [];
       } else {
         this.team2.players = message.team2;
+      }
+      if (message.turn === "done") {
+        this.$router.push({ name: `Match`, params: { id: message.matchId } });
       }
       this.matchFound = message.matchFound;
       console.log(message);

@@ -54,7 +54,7 @@
             <v-list-item-title>{{ $t("Navbar.Home") }}</v-list-item-title>
           </v-list-item>
 
-          <v-list-item index="Queue" :to="'/queue'">
+          <v-list-item v-if="user.id != null" index="Queue" :to="'/queue'">
             <v-list-item-title>{{ $t("Navbar.Queue") }}</v-list-item-title>
           </v-list-item>
 

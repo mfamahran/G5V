@@ -11,7 +11,8 @@ const routes = [
   {
     path: "/queue",
     name: "Queue",
-    component: () => import(/* webpackChunkName: "Home" */ "../views/Queue.vue")
+    component: () =>
+      import(/* webpackChunkName: "Queue" */ "../views/Queue.vue")
   },
   {
     path: "/matches",

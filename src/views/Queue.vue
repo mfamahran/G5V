@@ -235,9 +235,9 @@ export default {
     async banMap(map) {
       try {
         if (this.user.steam_id === this.team1.captain.steam_id) {
-          this.maps.splice(this.maps.indexOf(map), 1);
+          this.maps = this.maps.filter(m => m != map);
         } else if (this.user.steam_id === this.team2.captain.steam_id) {
-          this.maps.splice(this.maps.indexOf(map), 1);
+          this.maps = this.maps.filter(m => m != map);
         }
         this.queue.maps = this.maps;
         const message = await this.BanMap(this.queue);

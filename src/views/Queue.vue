@@ -109,7 +109,7 @@
                 <v-btn
                   small
                   color="info"
-                  @click="banMap(player)"
+                  @click="banMap(map)"
                   v-for="map in maps"
                   :key="map"
                   :disabled="checkCaptain() || checkTurn()"

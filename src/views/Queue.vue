@@ -219,14 +219,9 @@ export default {
     },
     async pickPlayers(player) {
       try {
-        if (this.user.steam_id === this.team1.captain.steam_id) {
-          this.team1.players.push(player);
-        } else if (this.user.steam_id === this.team2.captain.steam_id) {
-          this.team2.players.push(player);
-        }
-        this.queue.team1 = this.team1;
-        this.queue.team2 = this.team2;
-        const message = await this.PickPlayer(this.queue);
+        const message = await this.PickPlayer({
+          player: player
+        });
         console.log(message);
       } catch (err) {
         console.log(err);
@@ -234,13 +229,10 @@ export default {
     },
     async banMap(map) {
       try {
-        if (this.user.steam_id === this.team1.captain.steam_id) {
-          this.maps = this.maps.filter(m => m != map);
-        } else if (this.user.steam_id === this.team2.captain.steam_id) {
-          this.maps = this.maps.filter(m => m != map);
-        }
         this.queue.maps = this.maps;
-        const message = await this.BanMap(this.queue);
+        const message = await this.BanMap({
+          map: map
+        });
         console.log(message);
       } catch (err) {
         console.log(err);
